@@ -15,13 +15,14 @@ SoD included new graveyards and instances that are now on non-SoD servers
 
 ### Special Subzones
 For both Unstuck and Death skips there are special rules involving different subzones:
-    * Death Skips (`death_subzone_boundaries.json`):
-        - you do not get teleported to these special subzones if you are outside of it
-        - mainly starting zones, but some more elsewhere
-    * Unstuck Skips (`unstuck_subzone_boundaries.json`):
-        - you do not get teleported to these special subzones if you are outside of it
-        - only aware of one for now - The Gurubashi Arena
-            * CAREFUL - this will kill you by spawning you very high in the air
+
+* Death Skips (`death_subzone_boundaries.json`):
+   - you do not get teleported to these special subzones if you are outside of it
+   - mainly starting zones, but some more elsewhere     
+* Unstuck Skips (`unstuck_subzone_boundaries.json`):
+   - you do not get teleported to these special subzones if you are outside of it     
+   - only aware of one for now - The Gurubashi Arena
+      * CAREFUL - this will kill you by spawning you very high in the air
 
 ## Contributing
 This project uses the locations of graveyards and instance portals (located in `gyClassic.json` and `instances.json`) and it converts those json files into usable lua files for an addon in WoW classic.  the generated files (located in the `Data/` directory) includes locations for instances and graveyards as well as a partitions file that indicates voronoi lines used to draw lines on the map. 
