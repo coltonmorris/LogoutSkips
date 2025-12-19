@@ -31,3 +31,8 @@ The generated partition files contain a Lua table of line segments representing 
 Where:
 x1, y1 = Start point of the line segment (in world coordinates)
 x2, y2 = End point of the line segment (in world coordinates)
+
+to run the program that generates the data points:
+```
+python GenerateVoronoiPartitions.py
+```
