@@ -12,8 +12,70 @@ def toLua(input_string):
     output_string = output_string.replace('(', '{')
     return output_string
 
+def polygon_to_line_segments(points):
+    """Convert a list of polygon points to line segments (closing the polygon)"""
+    segments = []
+    for i in range(len(points)):
+        p1 = points[i]
+        p2 = points[(i + 1) % len(points)]  # Wrap around to close the polygon
+        segments.append((p1[0], p1[1], p2[0], p2[1]))
+    return segments
+
+def line_to_dashes(x1, y1, x2, y2, dash_length=40, gap_length=25):
+    """Break a line segment into dashes with gaps"""
+    import math
+    dx = x2 - x1
+    dy = y2 - y1
+    line_length = math.sqrt(dx*dx + dy*dy)
+
+    if line_length == 0:
+        return []
+
+    # Normalize direction
+    nx = dx / line_length
+    ny = dy / line_length
+
+    dashes = []
+    pos = 0
+    is_dash = True
+
+    while pos < line_length:
+        if is_dash:
+            end_pos = min(pos + dash_length, line_length)
+            dash_x1 = x1 + nx * pos
+            dash_y1 = y1 + ny * pos
+            dash_x2 = x1 + nx * end_pos
+            dash_y2 = y1 + ny * end_pos
+            dashes.append((dash_x1, dash_y1, dash_x2, dash_y2))
+            pos = end_pos
+        else:
+            pos += gap_length
+        is_dash = not is_dash
+
+    return dashes
+
+def polygon_to_dashed_segments(points, dash_length=40, gap_length=25):
+    """Convert polygon to dashed line segments"""
+    all_dashes = []
+    for i in range(len(points)):
+        p1 = points[i]
+        p2 = points[(i + 1) % len(points)]
+        dashes = line_to_dashes(p1[0], p1[1], p2[0], p2[1], dash_length, gap_length)
+        all_dashes.extend(dashes)
+    return all_dashes
+
 f = open('gyClassic.json')
 gy_locs = json.load(f)
+f.close()
+
+# Load subzone boundaries (for death skips)
+f = open('death_subzone_boundaries.json')
+death_subzone_boundaries = json.load(f)
+f.close()
+
+# Load unstuck subzone boundaries (for unstuck skips)
+f = open('unstuck_subzone_boundaries.json')
+unstuck_subzone_boundaries = json.load(f)
 f.close()
 
 kalimdor_locs_set = set()
@@ -91,6 +153,55 @@ vp.process()
 p = Path('Data/kalimdor_gy_partitions.lua')
 p.open('w').write("kalimdor_gy_partitions = " + toLua(json.dumps(vp.get_output())))
 
+# Generate subzone boundary line segments (dashed)
+eastern_kingdom_subzone_lines = []
+kalimdor_subzone_lines = []
+
+if '0' in death_subzone_boundaries:
+    for subzone in death_subzone_boundaries['0']:
+        # Use dashed segments for visual distinction
+        dashed_segments = polygon_to_dashed_segments(subzone['points'], dash_length=40, gap_length=25)
+        eastern_kingdom_subzone_lines.extend(dashed_segments)
+
+if '1' in death_subzone_boundaries:
+    for subzone in death_subzone_boundaries['1']:
+        # Use dashed segments for visual distinction
+        dashed_segments = polygon_to_dashed_segments(subzone['points'], dash_length=40, gap_length=25)
+        kalimdor_subzone_lines.extend(dashed_segments)
+
+p = Path('Data/eastern_kingdom_subzone_lines.lua')
+p.open('w').write("eastern_kingdom_subzone_lines = " + toLua(json.dumps(eastern_kingdom_subzone_lines)))
+
+p = Path('Data/kalimdor_subzone_lines.lua')
+p.open('w').write("kalimdor_subzone_lines = " + toLua(json.dumps(kalimdor_subzone_lines)))
+
+print("Generated death skip subzone boundary lines:")
+print(f"  Eastern Kingdoms: {len(eastern_kingdom_subzone_lines)} line segments")
+print(f"  Kalimdor: {len(kalimdor_subzone_lines)} line segments")
+
+# Generate unstuck skip subzone boundary line segments (dashed)
+eastern_kingdom_unstuck_subzone_lines = []
+kalimdor_unstuck_subzone_lines = []
+
+if '0' in unstuck_subzone_boundaries:
+    for subzone in unstuck_subzone_boundaries['0']:
+        dashed_segments = polygon_to_dashed_segments(subzone['points'], dash_length=40, gap_length=25)
+        eastern_kingdom_unstuck_subzone_lines.extend(dashed_segments)
+
+if '1' in unstuck_subzone_boundaries:
+    for subzone in unstuck_subzone_boundaries['1']:
+        dashed_segments = polygon_to_dashed_segments(subzone['points'], dash_length=40, gap_length=25)
+        kalimdor_unstuck_subzone_lines.extend(dashed_segments)
+
+p = Path('Data/eastern_kingdom_unstuck_subzone_lines.lua')
+p.open('w').write("eastern_kingdom_unstuck_subzone_lines = " + toLua(json.dumps(eastern_kingdom_unstuck_subzone_lines)))
+
+p = Path('Data/kalimdor_unstuck_subzone_lines.lua')
+p.open('w').write("kalimdor_unstuck_subzone_lines = " + toLua(json.dumps(kalimdor_unstuck_subzone_lines)))
+
+print("Generated unstuck skip subzone boundary lines:")
+print(f"  Eastern Kingdoms: {len(eastern_kingdom_unstuck_subzone_lines)} line segments")
+print(f"  Kalimdor: {len(kalimdor_unstuck_subzone_lines)} line segments")
 
 # y = json.dumps(vp.get_output())
 # y = y.replace('[', '{')

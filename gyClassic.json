@@ -135,7 +135,8 @@
       "x": -188.646271,
       "y": -8935.325,
       "graveyard": 1,
-      "title": "Elwynn Forest, Northshire"
+      "title": "Elwynn Forest, Northshire",
+      "subzone_restricted": true
     },
     {
       "x": -2037.692,
@@ -164,7 +165,8 @@
       "x": 336.321136,
       "y": -6164.226,
       "graveyard": 1,
-      "title": "Dun Morogh, Anvilmar"
+      "title": "Dun Morogh, Anvilmar",
+      "subzone_restricted": true
     },
     {
       "x": -2617.95874,
@@ -193,7 +195,8 @@
       "x": 1629.11,
       "y": 1882.94,
       "graveyard": 1,
-      "title": "Tirisfal Glades, Deathknell"
+      "title": "Tirisfal Glades, Deathknell",
+      "subzone_restricted": true
     },
     {
       "x": -1833.24072,
@@ -413,7 +416,8 @@
       "x": -3478.68,
       "y": -1081.4,
       "graveyard": 1,
-      "title": "The Barrens, Ratchet"
+      "title": "The Barrens, Ratchet",
+      "subzone_restricted": true
     },
     {
       "x": -1972.64,
@@ -442,7 +446,8 @@
       "x": 811.5312,
       "y": 10384.81,
       "graveyard": 1,
-      "title": "Teldrassil, Aldrassil"
+      "title": "Teldrassil, Aldrassil",
+      "subzone_restricted": true
     },
     {
       "x": -629.735168,
@@ -490,7 +495,8 @@
       "x": -153.215027,
       "y": -2944.5564,
       "graveyard": 1,
-      "title": "Mulgore, Red Cloud Mesa"
+      "title": "Mulgore, Red Cloud Mesa",
+      "subzone_restricted": true
     },
     {
       "x": -4412.01,
@@ -541,7 +547,8 @@
       "x": -4296.03369,
       "y": -634.6349,
       "graveyard": 1,
-      "title": "Durotar, Valley of Trials"
+      "title": "Durotar, Valley of Trials",
+      "subzone_restricted": true
     }
   ],
   "30": [

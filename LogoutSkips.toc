@@ -9,9 +9,13 @@ Data/eastern_kingdom_partitions.lua
 Data/eastern_kingdom_locs.lua
 Data/eastern_kingdom_gy_locs.lua
 Data/eastern_kingdom_gy_partitions.lua
+Data/eastern_kingdom_subzone_lines.lua
+Data/eastern_kingdom_unstuck_subzone_lines.lua
 Data/kalimdor_partitions.lua
 Data/kalimdor_gy_partitions.lua
 Data/kalimdor_locs.lua
 Data/kalimdor_gy_locs.lua
+Data/kalimdor_subzone_lines.lua
+Data/kalimdor_unstuck_subzone_lines.lua
 LogoutSkips.xml
 LogoutSkips.lua

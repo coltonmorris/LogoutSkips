@@ -70,6 +70,10 @@ local voronoi_lines_kalimdor = kalimdor_partitions
 local voronoi_lines = eastern_kingdom_partitions
 local gy_voronoi_lines = eastern_kingdom_gy_partitions
 local gy_voronoi_lines_kalimdor = kalimdor_gy_partitions
+local subzone_lines_ek = eastern_kingdom_subzone_lines or {}
+local subzone_lines_kalimdor = kalimdor_subzone_lines or {}
+local unstuck_subzone_lines_ek = eastern_kingdom_unstuck_subzone_lines or {}
+local unstuck_subzone_lines_kalimdor = kalimdor_unstuck_subzone_lines or {}
 
 -- This is all for drawing a line on the map in zones that we're not currently in
 -- We could just draw our line outside of the scrollframe and rotate it, and to be honest that may even be a better approach
@@ -325,6 +329,94 @@ for i=1,#gy_voronoi_lines_kalimdor do
 end
 applyLinesColor(gy_lines_kalimdor, logout_skip_settings['death_skip_partition_color'])
 
+-- Subzone boundary lines (dashed) - Eastern Kingdoms
+subzone_start_points_ek = {}
+subzone_end_points_ek = {}
+subzone_lines_ek_frames = {}
+
+for i=1,#subzone_lines_ek do
+	local start_point = CreateFrame('frame', nil, LineFrame)
+	start_point:SetSize(1, 1)
+	table.insert(subzone_start_points_ek, start_point)
+	local end_point = CreateFrame('frame', nil, LineFrame)
+	end_point:SetSize(1, 1)
+	table.insert(subzone_end_points_ek, end_point)
+	local Line = LineFrame:CreateLine(nil, 'OVERLAY')
+	Line:Hide()
+	Line:SetTexture('Interface\\BUTTONS\\WHITE8X8')
+	Line:SetThickness(2)
+	Line:SetStartPoint('CENTER', start_point, 0, 0)
+	Line:SetEndPoint('CENTER', end_point, 0, 0)
+	table.insert(subzone_lines_ek_frames, Line)
+end
+applyLinesColor(subzone_lines_ek_frames, logout_skip_settings['death_skip_partition_color'])
+
+-- Subzone boundary lines (dashed) - Kalimdor
+subzone_start_points_kalimdor = {}
+subzone_end_points_kalimdor = {}
+subzone_lines_kalimdor_frames = {}
+
+for i=1,#subzone_lines_kalimdor do
+	local start_point = CreateFrame('frame', nil, LineFrame)
+	start_point:SetSize(1, 1)
+	table.insert(subzone_start_points_kalimdor, start_point)
+	local end_point = CreateFrame('frame', nil, LineFrame)
+	end_point:SetSize(1, 1)
+	table.insert(subzone_end_points_kalimdor, end_point)
+	local Line = LineFrame:CreateLine(nil, 'OVERLAY')
+	Line:Hide()
+	Line:SetTexture('Interface\\BUTTONS\\WHITE8X8')
+	Line:SetThickness(2)
+	Line:SetStartPoint('CENTER', start_point, 0, 0)
+	Line:SetEndPoint('CENTER', end_point, 0, 0)
+	table.insert(subzone_lines_kalimdor_frames, Line)
+end
+applyLinesColor(subzone_lines_kalimdor_frames, logout_skip_settings['death_skip_partition_color'])
+
+-- Unstuck skip subzone boundary lines (dashed) - Eastern Kingdoms
+unstuck_subzone_start_points_ek = {}
+unstuck_subzone_end_points_ek = {}
+unstuck_subzone_lines_ek_frames = {}
+
+for i=1,#unstuck_subzone_lines_ek do
+	local start_point = CreateFrame('frame', nil, LineFrame)
+	start_point:SetSize(1, 1)
+	table.insert(unstuck_subzone_start_points_ek, start_point)
+	local end_point = CreateFrame('frame', nil, LineFrame)
+	end_point:SetSize(1, 1)
+	table.insert(unstuck_subzone_end_points_ek, end_point)
+	local Line = LineFrame:CreateLine(nil, 'OVERLAY')
+	Line:Hide()
+	Line:SetTexture('Interface\\BUTTONS\\WHITE8X8')
+	Line:SetThickness(2)
+	Line:SetStartPoint('CENTER', start_point, 0, 0)
+	Line:SetEndPoint('CENTER', end_point, 0, 0)
+	table.insert(unstuck_subzone_lines_ek_frames, Line)
+end
+applyLinesColor(unstuck_subzone_lines_ek_frames, logout_skip_settings['logout_skip_partition_color'])
+
+-- Unstuck skip subzone boundary lines (dashed) - Kalimdor
+unstuck_subzone_start_points_kalimdor = {}
+unstuck_subzone_end_points_kalimdor = {}
+unstuck_subzone_lines_kalimdor_frames = {}
+
+for i=1,#unstuck_subzone_lines_kalimdor do
+	local start_point = CreateFrame('frame', nil, LineFrame)
+	start_point:SetSize(1, 1)
+	table.insert(unstuck_subzone_start_points_kalimdor, start_point)
+	local end_point = CreateFrame('frame', nil, LineFrame)
+	end_point:SetSize(1, 1)
+	table.insert(unstuck_subzone_end_points_kalimdor, end_point)
+	local Line = LineFrame:CreateLine(nil, 'OVERLAY')
+	Line:Hide()
+	Line:SetTexture('Interface\\BUTTONS\\WHITE8X8')
+	Line:SetThickness(2)
+	Line:SetStartPoint('CENTER', start_point, 0, 0)
+	Line:SetEndPoint('CENTER', end_point, 0, 0)
+	table.insert(unstuck_subzone_lines_kalimdor_frames, Line)
+end
+applyLinesColor(unstuck_subzone_lines_kalimdor_frames, logout_skip_settings['logout_skip_partition_color'])
+
 points_ = {}
 texs_ = {}
 
@@ -403,6 +495,13 @@ local function update()
 	  for _,v in ipairs(lines_kalimdor) do
 	      v:Hide()
 	  end
+	  -- Hide unstuck subzone boundary lines
+	  for _,v in ipairs(unstuck_subzone_lines_ek_frames) do
+	      v:Hide()
+	  end
+	  for _,v in ipairs(unstuck_subzone_lines_kalimdor_frames) do
+	      v:Hide()
+	  end
 
 	  for i,v in ipairs(eastern_kingdom_locs) do
 	    texs_[i]:Hide()
@@ -419,6 +518,13 @@ local function update()
 	      v:Hide()
 	  end
 	  for _,v in ipairs(gy_lines_kalimdor) do
+	      v:Hide()
+	  end
+	  -- Hide subzone boundary lines
+	  for _,v in ipairs(subzone_lines_ek_frames) do
+	      v:Hide()
+	  end
+	  for _,v in ipairs(subzone_lines_kalimdor_frames) do
 	      v:Hide()
 	  end
 
@@ -440,14 +546,28 @@ local function update()
 		  for i,v in ipairs(voronoi_lines) do
 			drawLine(v[1], v[2], v[3], v[4], eastern_kingdom_lines[i], start_points[i], end_points[i])
 		  end
+		  -- Draw unstuck subzone boundary lines (dashed) for Eastern Kingdoms
+		  for i,v in ipairs(unstuck_subzone_lines_ek) do
+			drawLine(v[1], v[2], v[3], v[4], unstuck_subzone_lines_ek_frames[i], unstuck_subzone_start_points_ek[i], unstuck_subzone_end_points_ek[i])
+		  end
 		  for _,v in ipairs(lines_kalimdor) do
+		      v:Hide()
+		  end
+		  for _,v in ipairs(unstuck_subzone_lines_kalimdor_frames) do
 		      v:Hide()
 		  end
 		elseif cont == 1 and currentMapID ~= 947 then
 		  for i,v in ipairs(voronoi_lines_kalimdor) do
 			drawLine(v[1], v[2], v[3], v[4], lines_kalimdor[i], start_points_kalimdor[i], end_points_kalimdor[i])
 		  end
+		  -- Draw unstuck subzone boundary lines (dashed) for Kalimdor
+		  for i,v in ipairs(unstuck_subzone_lines_kalimdor) do
+			drawLine(v[1], v[2], v[3], v[4], unstuck_subzone_lines_kalimdor_frames[i], unstuck_subzone_start_points_kalimdor[i], unstuck_subzone_end_points_kalimdor[i])
+		  end
 		  for _,v in ipairs(eastern_kingdom_lines) do
+		      v:Hide()
+		  end
+		  for _,v in ipairs(unstuck_subzone_lines_ek_frames) do
 		      v:Hide()
 		  end
 		else
@@ -455,6 +575,12 @@ local function update()
 		      v:Hide()
 		  end
 		  for _,v in ipairs(lines_kalimdor) do
+		      v:Hide()
+		  end
+		  for _,v in ipairs(unstuck_subzone_lines_ek_frames) do
+		      v:Hide()
+		  end
+		  for _,v in ipairs(unstuck_subzone_lines_kalimdor_frames) do
 		      v:Hide()
 		  end
 		end
@@ -485,14 +611,28 @@ local function update()
 		for i,v in ipairs(gy_voronoi_lines) do
 		      drawLine(v[1], v[2], v[3], v[4], gy_lines[i], gy_start_points[i], gy_end_points[i])
 		end
+		-- Draw subzone boundary lines (dashed) for Eastern Kingdoms
+		for i,v in ipairs(subzone_lines_ek) do
+		      drawLine(v[1], v[2], v[3], v[4], subzone_lines_ek_frames[i], subzone_start_points_ek[i], subzone_end_points_ek[i])
+		end
 		for _,v in ipairs(gy_lines_kalimdor) do
+		    v:Hide()
+		end
+		for _,v in ipairs(subzone_lines_kalimdor_frames) do
 		    v:Hide()
 		end
 	      elseif cont == 1 and currentMapID ~= 947 then
 		for i,v in ipairs(gy_voronoi_lines_kalimdor) do
 		      drawLine(v[1], v[2], v[3], v[4], gy_lines_kalimdor[i], gy_start_points_kalimdor[i], gy_end_points_kalimdor[i])
 		end
+		-- Draw subzone boundary lines (dashed) for Kalimdor
+		for i,v in ipairs(subzone_lines_kalimdor) do
+		      drawLine(v[1], v[2], v[3], v[4], subzone_lines_kalimdor_frames[i], subzone_start_points_kalimdor[i], subzone_end_points_kalimdor[i])
+		end
 		for _,v in ipairs(gy_lines) do
+		    v:Hide()
+		end
+		for _,v in ipairs(subzone_lines_ek_frames) do
 		    v:Hide()
 		end
 	      else
@@ -500,6 +640,12 @@ local function update()
 		    v:Hide()
 		end
 		for _,v in ipairs(gy_lines_kalimdor) do
+		    v:Hide()
+		end
+		for _,v in ipairs(subzone_lines_ek_frames) do
+		    v:Hide()
+		end
+		for _,v in ipairs(subzone_lines_kalimdor_frames) do
 		    v:Hide()
 		end
 	      end
@@ -536,17 +682,17 @@ hooksecurefunc(WorldMapFrame, 'OnMapChanged', function()
 end)
 
 if logout_skip_settings['disabled'] then
-  LogoutSkips_Toggle:SetText("Show LogoutSkips")
+  LogoutSkips_Toggle:SetText("Show UnstuckSkips")
 else
-  LogoutSkips_Toggle:SetText("Hide LogoutSkips")
+  LogoutSkips_Toggle:SetText("Hide UnstuckSkips")
 end
 
 function LogoutSkips_Toggle_Click()
   logout_skip_settings['disabled'] = not logout_skip_settings['disabled']
   if logout_skip_settings['disabled'] then
-    LogoutSkips_Toggle:SetText("Show LogoutSkips")
+    LogoutSkips_Toggle:SetText("Show UnstuckSkips")
   else
-    LogoutSkips_Toggle:SetText("Hide LogoutSkips")
+    LogoutSkips_Toggle:SetText("Hide UnstuckSkips")
   end
   update()
 end
@@ -572,14 +718,14 @@ logout_skip_notifier:RegisterForDrag("LeftButton")
 logout_skip_notifier.title_text = logout_skip_notifier:CreateFontString(nil,"ARTWORK")
 logout_skip_notifier.title_text:SetFont("Fonts\\ARIALN.ttf", 9, "OUTLINE")
 logout_skip_notifier.title_text:SetPoint("CENTER",0,10)
-logout_skip_notifier.title_text:SetText("LogoutSkip Target")
+logout_skip_notifier.title_text:SetText("UnstuckSkip Target")
 logout_skip_notifier.title_text:SetWidth(160)
 logout_skip_notifier.title_text:SetWordWrap(false)
 
 logout_skip_notifier.text = logout_skip_notifier:CreateFontString(nil,"ARTWORK")
 logout_skip_notifier.text:SetFont("Fonts\\ARIALN.ttf", 10, "OUTLINE")
 logout_skip_notifier.text:SetPoint("CENTER",0,-5)
-logout_skip_notifier.text:SetText("LogoutSkip Target")
+logout_skip_notifier.text:SetText("UnstuckSkip Target")
 logout_skip_notifier.text:SetWidth(150)
 logout_skip_notifier.text:SetWordWrap(false)
 logout_skip_notifier.timer_handle = nil
@@ -680,20 +826,20 @@ local function applyLogoutSkipNotifierSettings()
 end
 
 local options = {
-	name = "LogoutSkips Options",
+	name = "UnstuckSkips Options",
 	handler = Hardcore,
 	type = "group",
 	args = {
 		logout_skip_options_header = {
 			type = "group",
-			name = "LogoutSkips",
+			name = "UnstuckSkips",
 			order = 1,
 			inline = true,
 			args = {
 				logoutskip_partition_colorpicker = {
 					type = "color",
 					name = "Partition Color",
-					desc = "Pick LogoutSkip partition color",
+					desc = "Pick UnstuckSkip partition color",
 					hasAlpha = true,
 					get = function()
 					  if logout_skip_settings['logout_skip_partition_color'] then
@@ -714,6 +860,9 @@ local options = {
 					  logout_skip_settings['logout_skip_partition_color']['a'] = a
 					  applyLinesColor(eastern_kingdom_lines, logout_skip_settings['logout_skip_partition_color'])
 					  applyLinesColor(lines_kalimdor, logout_skip_settings['logout_skip_partition_color'])
+					  -- Also apply to unstuck subzone boundary lines
+					  applyLinesColor(unstuck_subzone_lines_ek_frames, logout_skip_settings['logout_skip_partition_color'])
+					  applyLinesColor(unstuck_subzone_lines_kalimdor_frames, logout_skip_settings['logout_skip_partition_color'])
 					end,
 					order = 1,
 				},
@@ -793,6 +942,9 @@ local options = {
 					    logout_skip_settings['death_skip_partition_color']['a'] = a
 					  applyLinesColor(gy_lines, logout_skip_settings['death_skip_partition_color'])
 					  applyLinesColor(gy_lines_kalimdor, logout_skip_settings['death_skip_partition_color'])
+					  -- Also apply to subzone boundary lines
+					  applyLinesColor(subzone_lines_ek_frames, logout_skip_settings['death_skip_partition_color'])
+					  applyLinesColor(subzone_lines_kalimdor_frames, logout_skip_settings['death_skip_partition_color'])
 					end,
 					order = 2,
 				},
@@ -831,7 +983,7 @@ local options = {
 
 
 LibStub("AceConfig-3.0"):RegisterOptionsTable("LogoutSkips", options)
-optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("LogoutSkips", "LogoutSkips")
+optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("LogoutSkips", "UnstuckSkips")
 
 local logout_skip_event_handler = CreateFrame('frame', nil)
 
@@ -839,8 +991,14 @@ logout_skip_event_handler:SetScript("OnEvent", function(self, event, ...)
   if event == "PLAYER_ENTERING_WORLD" then
     applyLinesColor(eastern_kingdom_lines, logout_skip_settings['logout_skip_partition_color'] or defaults['logout_skip_partition_color'])
     applyLinesColor(lines_kalimdor, logout_skip_settings['logout_skip_partition_color'] or defaults['logout_skip_partition_color'])
+    -- Apply colors to unstuck subzone boundary lines (same color as unstuck skip partitions)
+    applyLinesColor(unstuck_subzone_lines_ek_frames, logout_skip_settings['logout_skip_partition_color'] or defaults['logout_skip_partition_color'])
+    applyLinesColor(unstuck_subzone_lines_kalimdor_frames, logout_skip_settings['logout_skip_partition_color'] or defaults['logout_skip_partition_color'])
     applyLinesColor(gy_lines, logout_skip_settings['death_skip_partition_color'] or defaults['death_skip_partition_color'])
     applyLinesColor(gy_lines_kalimdor, logout_skip_settings['death_skip_partition_color'] or defaults['death_skip_partition_color'])
+    -- Apply colors to death skip subzone boundary lines (same color as death skip partitions)
+    applyLinesColor(subzone_lines_ek_frames, logout_skip_settings['death_skip_partition_color'] or defaults['death_skip_partition_color'])
+    applyLinesColor(subzone_lines_kalimdor_frames, logout_skip_settings['death_skip_partition_color'] or defaults['death_skip_partition_color'])
 
     applyTargetsColor(kalimdor_gy_texs_, logout_skip_settings['death_skip_target_color'] or defaults['logout_skip_target_color'])
     applyTargetsColor(eastern_kingdom_gy_texs_, logout_skip_settings['death_skip_target_color'] or defaults['logout_skip_target_color'])
